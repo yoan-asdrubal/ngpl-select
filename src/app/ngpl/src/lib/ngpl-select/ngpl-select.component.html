@@ -1,0 +1,69 @@
+<mat-form-field class="widget-autocomplete-searchable-mat-form-field-0 {{customClass}}"
+                [appearance]="appearance"
+                [floatLabel]="floatLabel"
+>
+  <!--	[class.show-outline]="outlineAlways===false && hideOutlineWhenValue===true && !_selectedValue"-->
+  <!--	[class.hide-outline]="outlineAlways===false && hideOutlineWhenValue===true && !!_selectedValue"-->
+  <mat-label> {{ skeleton && !inputFormControl.value ? '' : placeHolder}}</mat-label>
+  <ngpl-skeleton width="75%" height="15px" [isLoading]="skeleton">
+    <input class="customInput" #customInput matInput type="text"
+           [readOnly]="readOnlyControl"
+           (keydown)="$event.preventDefault(); $event.stopPropagation()"
+           [formControl]="inputFormControl"
+           [matAutocomplete]="search_autocomplete"
+           [matAutocompleteConnectedTo]="null">
+  </ngpl-skeleton>
+  <mat-icon class="arrow" matSuffix *ngIf="skeleton!==true">arrow_drop_down</mat-icon>
+
+  <mat-autocomplete #search_autocomplete="matAutocomplete"
+                    class="widget-autocomplete-searchable-mat-autocomplete-0"
+                    (closed)="customInput.blur()"
+                    (opened)="inputSearchFocus()"
+                    [panelWidth]="panelWidth"
+  >
+    <mat-option *ngIf="searcheable===true" class="widget-autocomplete-searchable-search-item-1" disabled="disabled"
+                (click)="$event.preventDefault()" [class.sticky]="stickSearch">
+      <div class="widget-autocomplete-searchable-search-div-1">
+        <ng-template [ngIf]="showIconSearch === true ">
+          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
+          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="close"
+                    (click)="clearSearch($event)">
+            close
+          </mat-icon>
+        </ng-template>
+        <input class="input-filter" #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
+               autocomplete="off" (keydown)="$event.stopPropagation()">
+      </div>
+    </mat-option>
+    <mat-list>
+      <mat-list-item (click)="selectItem('')"
+                     class="widget-autocomplete-clean-option"
+                     *ngIf="(filteredItems$ | async)?.length !== 0 && showAllOption===true"
+                     [class.selected]="_selectedValue===''">
+        {{cleanOptionLabel}}
+      </mat-list-item>
+      <mat-list-item (click)="selectItem(item)"
+                     class="widget-autocomplete-option"
+                     *ngFor="let item of filteredItems$ | async"
+                     [class.selected]="!!_selectedValue && (propValue ? item[propValue]?.toString()===_selectedValue?.toString() : item ===_selectedValue)">
+        <div>
+          <div>
+            <span>{{(labelFn ? labelFn(item) : item[propLabel] || item) }}</span>
+          </div>
+        </div>
+      </mat-list-item>
+      <mat-list-item class="widget-autocomplete-searchable-no-result-data"
+                     *ngIf="(filteredItems$ | async)?.length === 0">
+        <ng-container
+          [ngTemplateOutlet]="noResultTemplate ? noResultTemplate : widgetAutoCompleteSearchableNoResults"
+          [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
+
+        </ng-container>
+      </mat-list-item>
+    </mat-list>
+    <mat-option [style.display]="'none'"></mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<ng-template #widgetAutoCompleteSearchableNoResults>
+  No hay coincidencias
+</ng-template>

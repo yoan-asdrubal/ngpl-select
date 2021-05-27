@@ -1,0 +1,44 @@
+<section>
+  <h1>NGPL SELECT</h1>
+  <div>
+    <mat-checkbox [formControl]="disableControl" class="mr-3">
+      Disable Control
+    </mat-checkbox>
+    <mat-checkbox [formControl]="readOnlyControl" class="mr-3">
+      ReadOnly Control
+    </mat-checkbox>
+  </div>
+  <form [formGroup]="formGroup" fxLayout="column">
+    <div fxLayout fxLayoutAlign="space-around">
+      <ngpl-select dfWidth="250px"
+                       placeHolder="Autocomplete"
+                       [readOnlyControl]="readOnlyControl.value"
+                       formControlName="autocomplete"
+                       [items]="items">
+
+      </ngpl-select>
+      <ngpl-select dfWidth="250px"
+                       placeHolder="Autocomplete"
+                       [readOnlyControl]="readOnlyControl.value"
+                       formControlName="autocomplete"
+                       [items]="items">
+
+      </ngpl-select>
+      <ngpl-select dfWidth="250px"
+                       placeHolder="Autocomplete"
+                       [readOnlyControl]="readOnlyControl.value"
+                       formControlName="autocomplete"
+                       [items]="items">
+
+      </ngpl-select>
+
+
+    </div>
+
+  </form>
+  <div fxLayout="" fxLayoutAlign="space-between">
+    <pre>{{formGroup.value | json}}</pre>
+    <pre>{{formGroup.getRawValue() | json}}</pre>
+  </div>
+
+</section>
