@@ -10,24 +10,27 @@
   </div>
   <form [formGroup]="formGroup" fxLayout="column">
     <div fxLayout fxLayoutAlign="space-around">
-      <ngpl-select dfWidth="250px"
+      <ngpl-select ngplWidth="250px"
+                      [ngplDisableControl]="disableControl.value"
                        placeHolder="Autocomplete"
                        [readOnlyControl]="readOnlyControl.value"
                        formControlName="autocomplete"
                        [items]="items">
 
       </ngpl-select>
-      <ngpl-select dfWidth="250px"
+      <ngpl-select ngplWidth="250px"
+                      [ngplDisableControl]="disableControl.value"
                        placeHolder="Autocomplete"
                        [readOnlyControl]="readOnlyControl.value"
-                       formControlName="autocomplete"
+                       formControlName="autocomplete1"
                        [items]="items">
 
       </ngpl-select>
-      <ngpl-select dfWidth="250px"
+      <ngpl-select ngplWidth="250px"
+                       [ngplDisableControl]="disableControl.value"
                        placeHolder="Autocomplete"
                        [readOnlyControl]="readOnlyControl.value"
-                       formControlName="autocomplete"
+                       formControlName="autocomplete2"
                        [items]="items">
 
       </ngpl-select>

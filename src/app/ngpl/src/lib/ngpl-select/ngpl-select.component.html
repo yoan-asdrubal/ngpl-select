@@ -7,6 +7,7 @@
   <mat-label> {{ skeleton && !inputFormControl.value ? '' : placeHolder}}</mat-label>
   <ngpl-skeleton width="75%" height="15px" [isLoading]="skeleton">
     <input class="customInput" #customInput matInput type="text"
+           [ngplDisableControl]="disabledControl"
            [readOnly]="readOnlyControl"
            (keydown)="$event.preventDefault(); $event.stopPropagation()"
            [formControl]="inputFormControl"

@@ -24,10 +24,12 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {NgplSelectModule} from './ngpl/src/lib/ngpl-select.module';
-import {NgplCommonDirectivesModule, NgplCommonPipesModule} from 'ngpl-common';
 import {NgplSelectTestComponent} from './app-test/ngpl-select-test/ngpl-select-test.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgplCommonModule} from 'ngpl-common';
+import {NgplSelectModule} from './ngpl/src/lib';
+// import 'ngpl-common/lib/ngpl-interfaces/string.interface';
+// import 'ngpl-common/lib/ngpl-interfaces/object.interface';
 
 registerLocaleData(localeEs);
 
@@ -51,12 +53,6 @@ const materialModules = [
   MatCheckboxModule
 ];
 
-const ngpl = [
-  NgplCommonDirectivesModule,
-  NgplCommonPipesModule,
-  NgplSelectModule
-];
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +66,8 @@ const ngpl = [
     FormsModule,
     ReactiveFormsModule,
     materialModules,
-    ngpl
+    NgplCommonModule,
+    NgplSelectModule
   ],
   providers: [{
     provide: LOCALE_ID, useValue: 'es-cl'

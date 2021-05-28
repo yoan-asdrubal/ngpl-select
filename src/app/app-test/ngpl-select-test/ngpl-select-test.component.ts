@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'ngpl-ngpl-select-test',
+  selector: 'ngpl-select-test',
   templateUrl: './ngpl-select-test.component.html',
   styleUrls: ['./ngpl-select-test.component.scss']
 })
@@ -23,11 +23,15 @@ export class NgplSelectTestComponent implements OnInit {
   ngOnInit(): void {
     this.formGroup = this._formB.group({
       autocomplete: [],
+      autocomplete1: [],
+      autocomplete2: []
     });
+
     this.items = this.index.map((i) => {
+
       return {
         id: i,
-        descripcion: `Value Long Descripcion to item  ${i}`
+        descripcion: String.getRandomSentence(3)
       };
     });
 

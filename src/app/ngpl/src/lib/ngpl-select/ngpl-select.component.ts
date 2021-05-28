@@ -338,10 +338,6 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
   setDisabledState(isDisabled: boolean): void {
     this.disabledControl = isDisabled;
-    if (!!isDisabled) {
-      this.inputFormControl.disable();
-    }else
-      this.inputFormControl.enable();
   }
 
   writeValue(obj: any): void {

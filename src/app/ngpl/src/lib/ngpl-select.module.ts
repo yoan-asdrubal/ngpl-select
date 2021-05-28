@@ -9,8 +9,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {NgplSelectComponent} from './ngpl-select/ngpl-select.component';
-import {NgplCommonModule} from 'ngpl-common';
-
+import {NgplCommonModule} from 'ngpl';
+import {NgplCommonDirectivesModule} from 'ngpl-common';
 
 const widgesToImport = [
   NgplSelectComponent,
@@ -21,7 +21,6 @@ const widgesToImport = [
   exports: [widgesToImport],
   imports: [
     CommonModule,
-    NgplCommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
@@ -30,6 +29,8 @@ const widgesToImport = [
     ReactiveFormsModule,
     MatIconModule,
     OverlayModule,
+    NgplCommonModule,
+    NgplCommonDirectivesModule
   ]
 })
 export class NgplSelectModule {
