@@ -22,9 +22,12 @@ export class NgplSelectTestComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this._formB.group({
-      autocomplete: [],
-      autocomplete1: [],
-      autocomplete2: []
+      select: [],
+      select1: [],
+      select2: [],
+      select3: [],
+      select4: [],
+      select5: []
     });
 
     this.items = this.index.map((i) => {
@@ -35,11 +38,10 @@ export class NgplSelectTestComponent implements OnInit {
       };
     });
 
-    // this.formGroup.statusChanges
-    //   .pipe(
-    //     untilDestroyed(this),
-    //     tap(val => console.log('statusChanges', val, this.formGroup.value))
-    //   )
-    //   .subscribe();
   }
+
+  labelFn(item) {
+    return `${item.id} - ${item.descripcion}`;
+  }
+
 }
