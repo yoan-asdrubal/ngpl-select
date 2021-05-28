@@ -2,7 +2,7 @@
   "name": "ngpl-select",
   "version": "1.0.1",
   "peerDependencies": {
-    "ngpl-common": "1.0.7"
+    "ngpl-common": "1.0.17"
   },
 
   "dependencies": {
