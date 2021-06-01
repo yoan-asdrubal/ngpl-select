@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: 'ngpl-select',
     component: NgplSelectTestComponent
+  },
+  {
+    path: '**',
+    component: NgplSelectTestComponent
   }
 ];
 
