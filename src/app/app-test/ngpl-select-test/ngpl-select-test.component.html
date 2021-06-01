@@ -7,6 +7,11 @@
     <mat-checkbox [formControl]="readOnlyControl" class="mr-3">
       ReadOnly Control
     </mat-checkbox>
+
+    <mat-checkbox [formControl]="loadingControl" class="mr-3">
+      Show Loading
+    </mat-checkbox>
+
   </div>
   <form [formGroup]="formGroup" fxLayout="column">
     <div fxLayout fxLayoutAlign="space-around">
@@ -15,6 +20,7 @@
                    placeHolder="With Id as Value"
                    propValue="id"
                    [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
                    formControlName="select"
                    [items]="items">
 
@@ -23,6 +29,7 @@
                    [ngplDisableControl]="disableControl.value"
                    placeHolder="With Object as Value"
                    [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
                    formControlName="select1"
                    [items]="items">
 
@@ -31,6 +38,7 @@
                    placeHolder="With Label Function"
                    propValue="descripcion"
                    [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
                    formControlName="select2"
                    [labelFn]="labelFn"
                    [items]="items">
@@ -41,12 +49,14 @@
     <div fxLayout fxLayoutAlign="space-around">
 
       <ngpl-select ngplWidth="250px"
-                   placeHolder="With No Result Template"
+                   placeHolder="With Custom Template"
                    propValue="descripcion"
                    [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
                    formControlName="select3"
                    [filterBy]="'descripcion'"
                    [noResultTemplate]="noResult"
+                   [itemTemplate]="selectItemTemplate"
                    [items]="items">
       </ngpl-select>
 
@@ -55,6 +65,7 @@
                    propValue="descripcion"
                    showAllOption="false"
                    [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
                    formControlName="select4"
                    [items]="items">
       </ngpl-select>
@@ -64,6 +75,7 @@
                    propValue="descripcion"
                    searcheable="false"
                    [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
                    formControlName="select5"
                    [items]="items">
       </ngpl-select>
@@ -71,7 +83,7 @@
     </div>
     <ng-template #noResult>
       <div>
-        <h1>No Items Found</h1>
+        <h1>No Items Found Custom Message</h1>
       </div>
     </ng-template>
   </form>
@@ -81,3 +93,12 @@
   </div>
 
 </section>
+<ng-template #selectItemTemplate let-item='item' let-order='order'>
+  <div fxLayout fxLayoutAlign="space-between center" class="item-template">
+    <mat-icon class="mr-2 "
+              [class.odd]="item.id % 2 === 0"
+              [class.even]="item.id % 2 !== 0">
+      {{item.id % 2 === 0 ? "3d_rotation" : 'more_vert'}}</mat-icon>
+    <p> {{item.id}} - {{item.descripcion}}</p>
+  </div>
+</ng-template>

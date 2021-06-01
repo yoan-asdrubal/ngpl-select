@@ -1,11 +1,9 @@
 <mat-form-field class="widget-autocomplete-searchable-mat-form-field-0 {{customClass}}"
                 [appearance]="appearance"
-                [floatLabel]="floatLabel"
+                [floatLabel]="showLoading ? 'always' : floatLabel"
 >
-  <!--	[class.show-outline]="outlineAlways===false && hideOutlineWhenValue===true && !_selectedValue"-->
-  <!--	[class.hide-outline]="outlineAlways===false && hideOutlineWhenValue===true && !!_selectedValue"-->
-  <mat-label> {{ skeleton && !inputFormControl.value ? '' : placeHolder}}</mat-label>
-  <ngpl-skeleton width="75%" height="15px" [isLoading]="skeleton">
+  <mat-label> {{ placeHolder}}</mat-label>
+  <ngpl-skeleton [width]="showLoadingWidth" [height]="showLoadingHeight" [isLoading]="showLoading">
     <input class="customInput" #customInput matInput type="text"
            [ngplDisableControl]="disabledControl"
            [readOnly]="readOnlyControl"
@@ -14,7 +12,7 @@
            [matAutocomplete]="search_autocomplete"
            [matAutocompleteConnectedTo]="null">
   </ngpl-skeleton>
-  <mat-icon class="arrow" matSuffix *ngIf="skeleton!==true">arrow_drop_down</mat-icon>
+  <mat-icon class="arrow" matSuffix *ngIf="showLoading!==true">arrow_drop_down</mat-icon>
 
   <mat-autocomplete #search_autocomplete="matAutocomplete"
                     class="widget-autocomplete-searchable-mat-autocomplete-0"
@@ -47,11 +45,12 @@
                      class="widget-autocomplete-option"
                      *ngFor="let item of filteredItems$ | async"
                      [class.selected]="!!_selectedValue && (propValue ? item[propValue]?.toString()===_selectedValue?.toString() : item ===_selectedValue)">
-        <div>
-          <div>
-            <span>{{(labelFn ? labelFn(item) : item[propLabel] || item) }}</span>
-          </div>
-        </div>
+        <ng-container
+          [ngTemplateOutlet]="itemTemplate ? itemTemplate : selectItemTemplate"
+          [ngTemplateOutletContext]="{item:item}">
+        </ng-container>
+
+
       </mat-list-item>
       <mat-list-item class="widget-autocomplete-searchable-no-result-data"
                      *ngIf="(filteredItems$ | async)?.length === 0">
@@ -67,4 +66,13 @@
 </mat-form-field>
 <ng-template #widgetAutoCompleteSearchableNoResults>
   No hay coincidencias
+</ng-template>
+
+
+<ng-template #selectItemTemplate let-item='item'>
+  <div>
+    <div>
+      <span>{{(labelFn ? labelFn(item) : item[propLabel] || item) }}</span>
+    </div>
+  </div>
 </ng-template>
