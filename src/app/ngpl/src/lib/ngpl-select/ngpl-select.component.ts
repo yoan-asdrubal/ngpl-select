@@ -75,9 +75,23 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   @Input() filterBy: string | string[] = ['descripcion'];
 
   /**
+   * Template para mostrar cuando no existan elementos.
+   */
+  @Input() noItemsTemplate: TemplateRef<any>;
+  /**
    * Template para mostrar cuando no existan resultados en la búsqueda, es opcional.
    */
   @Input() noResultTemplate: TemplateRef<any>;
+  /**
+   * Template para mostrar cuando no existan resultados en la búsqueda, es opcional.
+   */
+
+  @Input() noItemsText  = 'No hay elementos.';
+
+  /**
+   * Template para mostrar cuando no existan resultados en la búsqueda, es opcional.
+   */
+  @Input() noResultText = 'No hay Coincidencias.';
 
   /**
    * Conjunto de clases que se aplicaran al mat-form-field de la vista

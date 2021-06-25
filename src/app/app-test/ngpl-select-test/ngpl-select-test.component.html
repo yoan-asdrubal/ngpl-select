@@ -81,9 +81,60 @@
       </ngpl-select>
 
     </div>
+
+    <div fxLayout fxLayoutAlign="space-around">
+
+      <ngpl-select ngplWidth="220px"
+                   placeHolder="With No Result Template"
+                   propValue="descripcion"
+                   [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
+                   formControlName="select3"
+                   [filterBy]="'descripcion'"
+                   [noResultTemplate]="noResult"
+                   [itemTemplate]="selectItemTemplate"
+                   [items]="items">
+      </ngpl-select>
+
+      <ngpl-select ngplWidth="220px"
+                   placeHolder="With No Items Template"
+                   propValue="descripcion"
+                   showAllOption="false"
+                   [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
+                   [noItemsTemplate]="noItems"
+                   formControlName="select4"
+                   [items]="[]">
+      </ngpl-select>
+
+      <ngpl-select ngplWidth="220px"
+                   placeHolder="With no Items text"
+                   propValue="descripcion"
+                   [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
+                   [noItemsText]="'No existen items a listar'"
+                   formControlName="select5"
+                   [items]="[]">
+      </ngpl-select>
+      <ngpl-select ngplWidth="220px"
+                   placeHolder="With no Result text"
+                   propValue="descripcion"
+                   [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
+                   [noResultText]="'No existen Coincidencias en la busqueda'"
+                   formControlName="select5"
+                   [items]="items">
+      </ngpl-select>
+
+    </div>
     <ng-template #noResult>
       <div>
         <h1>No Items Found Custom Message</h1>
+      </div>
+    </ng-template>
+    <ng-template #noItems>
+      <div>
+        <h1>No Items Exist Custom Message</h1>
       </div>
     </ng-template>
   </form>

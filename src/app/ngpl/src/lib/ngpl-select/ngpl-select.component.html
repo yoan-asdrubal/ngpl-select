@@ -54,18 +54,33 @@
       </mat-list-item>
       <mat-list-item class="widget-autocomplete-searchable-no-result-data"
                      *ngIf="(filteredItems$ | async)?.length === 0">
-        <ng-container
-          [ngTemplateOutlet]="noResultTemplate ? noResultTemplate : widgetAutoCompleteSearchableNoResults"
-          [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
+        <ng-template [ngIf]="items?.length === 0">
+          <ng-container
+            [ngTemplateOutlet]="noItemsTemplate ? noItemsTemplate : widgetAutoCompleteSearchableNoResults"
+            [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
 
-        </ng-container>
+          </ng-container>
+        </ng-template>
+        <ng-template [ngIf]="items?.length > 0">
+          <ng-container
+            [ngTemplateOutlet]="noResultTemplate ? noResultTemplate : widgetAutoCompleteSearchableNoResults"
+            [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
+
+          </ng-container>
+        </ng-template>
+
       </mat-list-item>
     </mat-list>
     <mat-option [style.display]="'none'"></mat-option>
   </mat-autocomplete>
 </mat-form-field>
 <ng-template #widgetAutoCompleteSearchableNoResults>
-  No hay coincidencias
+  <ng-template [ngIf]="items?.length === 0">
+      {{noItemsText}}
+  </ng-template>
+  <ng-template [ngIf]="items?.length > 0">
+      {{noResultText}}
+  </ng-template>
 </ng-template>
 
 
