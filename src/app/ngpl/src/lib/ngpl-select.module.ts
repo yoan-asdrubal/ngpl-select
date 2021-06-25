@@ -9,8 +9,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {NgplSelectComponent} from './ngpl-select/ngpl-select.component';
-import {NgplCommonModule} from 'ngpl';
-import {NgplCommonDirectivesModule} from 'ngpl-common';
+import {NgplCommonDirectivesModule, NgplCommonModule} from 'ngpl-common';
 
 const widgesToImport = [
   NgplSelectComponent,

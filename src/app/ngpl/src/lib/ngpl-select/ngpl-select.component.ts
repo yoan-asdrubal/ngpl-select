@@ -20,7 +20,7 @@ import {Changes} from 'ngx-reactivetoolkit';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
-import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterPipe} from 'ngpl-common';
+import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService} from 'ngpl-common';
 
 /**
  * Se comporta como un select, permite realizar busqueda sobre las opciones en el frontend
@@ -187,10 +187,6 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   inputFormControl = new FormControl('');
 
   filterConfig = {};
-  /**
-   * Pipe utilizar para realizar la búsqueda
-   */
-  filterPipe = new NgplFilterPipe();
 
   /**
    * Referencia al panel del autocomplete , se utiliza para abrir o cerrar el mismo segun corresponda
@@ -202,7 +198,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   @Input() itemTemplate: TemplateRef<any>;
 
 
-  constructor() {
+  constructor(private ngplFilterService: NgplFilterService) {
   }
 
   /** Parte 1
@@ -369,7 +365,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
   applyFilter(items, filter): void {
     this.stickSearch = false;
-    this.filteredItems$.next(this.filterPipe.transform(items, filter));
+    this.filteredItems$.next(this.ngplFilterService.filter(items, filter));
     this.stickSearch = true;
   }
 
