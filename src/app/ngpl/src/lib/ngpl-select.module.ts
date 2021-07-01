@@ -13,6 +13,7 @@ import {NgplCommonDirectivesModule, NgplCommonModule} from 'ngpl-common';
 import { NgplItemTemplateDirective } from './ngpl-item-template.directive';
 import { NoItemsTemplateDirective } from './no-items-template.directive';
 import { ItemsNotFoundTemplateDirective } from './items-not-found-template.directive';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 const widgesToImport = [
   NgplSelectComponent,
@@ -28,6 +29,7 @@ const widgesToImport = [
     ReactiveFormsModule,
     MatIconModule,
     OverlayModule,
+    ScrollingModule,
     NgplCommonModule,
     NgplCommonDirectivesModule
   ]

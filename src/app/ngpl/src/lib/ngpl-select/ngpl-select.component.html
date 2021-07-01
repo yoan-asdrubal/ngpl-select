@@ -35,15 +35,18 @@
       </div>
     </div>
 
-    <div (click)="selectItem(item)"
-         class="ngpl-select-option"
-         *ngFor="let item of filteredItems$ | async"
-         [class.selected]="!!_selectedValue && (propValue ? item[propValue]?.toString()===_selectedValue?.toString() : item ===_selectedValue)">
-      <ng-container
-        [ngTemplateOutlet]="!!itemTemplateRef ? itemTemplateRef.template : selectItemTemplate"
-        [ngTemplateOutletContext]="{item:item}">
-      </ng-container>
-    </div>
+    <cdk-virtual-scroll-viewport  *ngIf="(filteredItems$ | async)?.length > 0" itemSize="48" class="ngpl-select-search-viewport">
+
+      <div (click)="selectItem(item)"
+           class="ngpl-select-option"
+           *cdkVirtualFor="let item of filteredItems$ | async"
+           [class.selected]="!!_selectedValue && (propValue ? item[propValue]?.toString()===_selectedValue?.toString() : item ===_selectedValue)">
+        <ng-container
+          [ngTemplateOutlet]="!!itemTemplateRef ? itemTemplateRef.template : selectItemTemplate"
+          [ngTemplateOutletContext]="{item:item}">
+        </ng-container>
+      </div>
+    </cdk-virtual-scroll-viewport>
 
     <div class="ngpl-select-option ngpl-select-no-result-data"
          *ngIf="(filteredItems$ | async)?.length === 0">

@@ -17,61 +17,10 @@
   }
 }
 
-.widget-autocomplete-searchable-mat-autocomplete-0 {
-  .widget-autocomplete-searchable-search-item-1 {
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    background-color: white;
-    color: rgba(0, 0, 0, 0.87);
-
-    &.sticky {
-      position: sticky;
-      left: 0;
-      top: 0;
-      background: white;
-      z-index: 1;
-    }
-
-    .widget-autocomplete-searchable-search-div-1 {
-      width: 100%;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      max-width: 250px;
-
-      input {
-        flex: 1 1;
-        height: 48px;
-        width: 100%;
-        padding-left: 16px;
-        border: 0 !important;
-        caret-color: #f27935 !important;
-      }
-
-      .mat-icon {
-        color: #888888;
-
-        &.close {
-          cursor: pointer !important;
-        }
-      }
-
-      mat-divider {
-        width: 100%;
-        height: 1px;
-        background-color: #d8d8d8;
-      }
-    }
-  }
-
-}
-
 .ngpl-select-content {
   background-color: white;
   padding-top: 0;
   font-family: "Source Sans Pro", sans-serif !important;
-  max-height: 250px;
-  overflow: auto;
-
 
   .ngpl-select-option {
     cursor: pointer;
@@ -143,5 +92,17 @@
     }
   }
 
+  .ngpl-select-search-viewport{
+    height: 240px;
+  }
 }
 
+.example-viewport {
+  height: 200px;
+  width: 200px;
+  border: 1px solid black;
+}
+
+.example-item {
+  height: 50px;
+}
