@@ -55,29 +55,28 @@
                    [showLoading]="loadingControl.value"
                    formControlName="select3"
                    [filterBy]="'descripcion'"
-                   [noResultTemplate]="noResult"
-                   [itemTemplate]="selectItemTemplate"
                    [items]="items">
-      </ngpl-select>
 
-      <ngpl-select ngplWidth="250px"
-                   placeHolder="With No All Options"
-                   propValue="descripcion"
-                   showAllOption="false"
-                   [readOnlyControl]="readOnlyControl.value"
-                   [showLoading]="loadingControl.value"
-                   formControlName="select4"
-                   [items]="items">
-      </ngpl-select>
+        <ngplItemTemplate>
+          <ng-template let-item='item' let-order='order'>
+            <div fxLayout fxLayoutAlign="space-between center" class="item-template">
+              <mat-icon class="mr-2 "
+                        [class.odd]="item.id % 2 === 0"
+                        [class.even]="item.id % 2 !== 0">
+                {{item.id % 2 === 0 ? "3d_rotation" : 'more_vert'}}</mat-icon>
+              <p class="mb-0"> {{item.id}} - {{item.descripcion}}</p>
+            </div>
+          </ng-template>
+        </ngplItemTemplate>
 
-      <ngpl-select ngplWidth="250px"
-                   placeHolder="No Searcheable"
-                   propValue="descripcion"
-                   searcheable="false"
-                   [readOnlyControl]="readOnlyControl.value"
-                   [showLoading]="loadingControl.value"
-                   formControlName="select5"
-                   [items]="items">
+        <ngplItemsNoFoundTemplate>
+          <ng-template let-search='search'>
+            <h3>No hay resultados de busqueda para {{search}}</h3>
+          </ng-template>
+        </ngplItemsNoFoundTemplate>
+
+
+
       </ngpl-select>
 
     </div>
@@ -85,28 +84,20 @@
     <div fxLayout fxLayoutAlign="space-around">
 
       <ngpl-select ngplWidth="220px"
-                   placeHolder="With No Result Template"
+                   placeHolder="With no Items template"
                    propValue="descripcion"
                    [readOnlyControl]="readOnlyControl.value"
                    [showLoading]="loadingControl.value"
-                   formControlName="select3"
-                   [filterBy]="'descripcion'"
-                   [noResultTemplate]="noResult"
-                   [itemTemplate]="selectItemTemplate"
-                   [items]="items">
-      </ngpl-select>
-
-      <ngpl-select ngplWidth="220px"
-                   placeHolder="With No Items Template"
-                   propValue="descripcion"
-                   showAllOption="false"
-                   [readOnlyControl]="readOnlyControl.value"
-                   [showLoading]="loadingControl.value"
-                   [noItemsTemplate]="noItems"
-                   formControlName="select4"
+                   formControlName="select5"
                    [items]="[]">
-      </ngpl-select>
 
+        <ngplNoItemsTemplate>
+          <ng-template>
+            <h3>No hay nada para mostrar </h3>
+          </ng-template>
+        </ngplNoItemsTemplate>
+
+      </ngpl-select>
       <ngpl-select ngplWidth="220px"
                    placeHolder="With no Items text"
                    propValue="descripcion"
@@ -127,16 +118,7 @@
       </ngpl-select>
 
     </div>
-    <ng-template #noResult>
-      <div>
-        <h1>No Items Found Custom Message</h1>
-      </div>
-    </ng-template>
-    <ng-template #noItems>
-      <div>
-        <h1>No Items Exist Custom Message</h1>
-      </div>
-    </ng-template>
+
   </form>
   <div fxLayout="" fxLayoutAlign="space-between">
     <pre>{{formGroup.value | json}}</pre>
@@ -144,12 +126,4 @@
   </div>
 
 </section>
-<ng-template #selectItemTemplate let-item='item' let-order='order'>
-  <div fxLayout fxLayoutAlign="space-between center" class="item-template">
-    <mat-icon class="mr-2 "
-              [class.odd]="item.id % 2 === 0"
-              [class.even]="item.id % 2 !== 0">
-      {{item.id % 2 === 0 ? "3d_rotation" : 'more_vert'}}</mat-icon>
-    <p> {{item.id}} - {{item.descripcion}}</p>
-  </div>
-</ng-template>
+

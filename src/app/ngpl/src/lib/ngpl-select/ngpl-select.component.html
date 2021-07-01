@@ -1,4 +1,5 @@
-<mat-form-field class="widget-autocomplete-searchable-mat-form-field-0 {{customClass}}"
+<mat-form-field class="ngpl-select {{customClass}}"
+                (click)="openPanelWithBackdrop($event)"
                 [appearance]="appearance"
                 [floatLabel]="showLoading ? 'always' : floatLabel"
 >
@@ -7,22 +8,21 @@
     <input class="customInput" #customInput matInput type="text"
            [ngplDisableControl]="disabledControl"
            [readOnly]="readOnlyControl"
+           autocomplete="off"
            (keydown)="$event.preventDefault(); $event.stopPropagation()"
-           [formControl]="inputFormControl"
-           [matAutocomplete]="search_autocomplete"
-           [matAutocompleteConnectedTo]="null">
+           [formControl]="inputFormControl">
   </ngpl-skeleton>
   <mat-icon class="arrow" matSuffix *ngIf="showLoading!==true">arrow_drop_down</mat-icon>
 
-  <mat-autocomplete #search_autocomplete="matAutocomplete"
-                    class="widget-autocomplete-searchable-mat-autocomplete-0"
-                    (closed)="customInput.blur()"
-                    (opened)="inputSearchFocus()"
-                    [panelWidth]="panelWidth"
-  >
-    <mat-option *ngIf="searcheable===true" class="widget-autocomplete-searchable-search-item-1" disabled="disabled"
-                (click)="$event.preventDefault()" [class.sticky]="stickSearch">
-      <div class="widget-autocomplete-searchable-search-div-1">
+</mat-form-field>
+<div cdkOverlayOrigin></div>
+
+<ng-template #templatePortalContent>
+  <div class="mat-elevation-z8 ngpl-select-content" [ngplWidth]="panelWidth">
+
+    <div *ngIf="searcheable===true" class="ngpl-select-search" disabled="disabled"
+         (click)="$event.preventDefault()" [class.sticky]="stickSearch">
+      <div class="ngpl-select-search-content">
         <ng-template [ngIf]="showIconSearch === true ">
           <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
           <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="close"
@@ -33,53 +33,45 @@
         <input class="input-filter" #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
                autocomplete="off" (keydown)="$event.stopPropagation()">
       </div>
-    </mat-option>
-    <mat-list>
-      <mat-list-item (click)="selectItem('')"
-                     class="widget-autocomplete-clean-option"
-                     *ngIf="(filteredItems$ | async)?.length !== 0 && showAllOption===true"
-                     [class.selected]="_selectedValue===''">
-        {{cleanOptionLabel}}
-      </mat-list-item>
-      <mat-list-item (click)="selectItem(item)"
-                     class="widget-autocomplete-option"
-                     *ngFor="let item of filteredItems$ | async"
-                     [class.selected]="!!_selectedValue && (propValue ? item[propValue]?.toString()===_selectedValue?.toString() : item ===_selectedValue)">
+    </div>
+
+    <div (click)="selectItem(item)"
+         class="ngpl-select-option"
+         *ngFor="let item of filteredItems$ | async"
+         [class.selected]="!!_selectedValue && (propValue ? item[propValue]?.toString()===_selectedValue?.toString() : item ===_selectedValue)">
+      <ng-container
+        [ngTemplateOutlet]="!!itemTemplateRef ? itemTemplateRef.template : selectItemTemplate"
+        [ngTemplateOutletContext]="{item:item}">
+      </ng-container>
+    </div>
+
+    <div class="ngpl-select-option ngpl-select-no-result-data"
+         *ngIf="(filteredItems$ | async)?.length === 0">
+      <ng-template [ngIf]="items?.length === 0">
         <ng-container
-          [ngTemplateOutlet]="itemTemplate ? itemTemplate : selectItemTemplate"
-          [ngTemplateOutletContext]="{item:item}">
+          [ngTemplateOutlet]="!!noItemsTemplateRef ? noItemsTemplateRef.template : ngplSelectNoResults"
+          [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
+
         </ng-container>
+      </ng-template>
+      <ng-template [ngIf]="items?.length > 0">
+        <ng-container
+          [ngTemplateOutlet]="!!itemNoFoundTemplateRef ? itemNoFoundTemplateRef.template : ngplSelectNoResults"
+          [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
 
+        </ng-container>
+      </ng-template>
 
-      </mat-list-item>
-      <mat-list-item class="widget-autocomplete-searchable-no-result-data"
-                     *ngIf="(filteredItems$ | async)?.length === 0">
-        <ng-template [ngIf]="items?.length === 0">
-          <ng-container
-            [ngTemplateOutlet]="noItemsTemplate ? noItemsTemplate : widgetAutoCompleteSearchableNoResults"
-            [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
+    </div>
+  </div>
+</ng-template>
 
-          </ng-container>
-        </ng-template>
-        <ng-template [ngIf]="items?.length > 0">
-          <ng-container
-            [ngTemplateOutlet]="noResultTemplate ? noResultTemplate : widgetAutoCompleteSearchableNoResults"
-            [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
-
-          </ng-container>
-        </ng-template>
-
-      </mat-list-item>
-    </mat-list>
-    <mat-option [style.display]="'none'"></mat-option>
-  </mat-autocomplete>
-</mat-form-field>
-<ng-template #widgetAutoCompleteSearchableNoResults>
+<ng-template #ngplSelectNoResults>
   <ng-template [ngIf]="items?.length === 0">
-      {{noItemsText}}
+    {{noItemsText}}
   </ng-template>
   <ng-template [ngIf]="items?.length > 0">
-      {{noResultText}}
+    {{noResultText}}
   </ng-template>
 </ng-template>
 

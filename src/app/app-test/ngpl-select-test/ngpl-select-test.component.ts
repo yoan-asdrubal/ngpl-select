@@ -8,8 +8,6 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 })
 export class NgplSelectTestComponent implements OnInit {
 
-  index = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
   items: any[] = [];
 
   formGroup: FormGroup;
@@ -31,17 +29,17 @@ export class NgplSelectTestComponent implements OnInit {
       select5: []
     });
 
-    this.items = this.index.map((i) => {
+    this.items = Array(25).fill(1).map((i, index) => {
 
       return {
-        id: i,
+        id: index,
         descripcion: String.getRandomSentence(3)
       };
     });
 
   }
 
-  labelFn(item) {
+  labelFn(item): string {
     return `${item.id} - ${item.descripcion}`;
   }
 

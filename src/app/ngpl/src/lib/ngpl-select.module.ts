@@ -10,21 +10,21 @@ import {MatIconModule} from '@angular/material/icon';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {NgplSelectComponent} from './ngpl-select/ngpl-select.component';
 import {NgplCommonDirectivesModule, NgplCommonModule} from 'ngpl-common';
+import { NgplItemTemplateDirective } from './ngpl-item-template.directive';
+import { NoItemsTemplateDirective } from './no-items-template.directive';
+import { ItemsNotFoundTemplateDirective } from './items-not-found-template.directive';
 
 const widgesToImport = [
   NgplSelectComponent,
 ];
 
 @NgModule({
-  declarations: [widgesToImport],
-  exports: [widgesToImport],
+  declarations: [widgesToImport, NgplItemTemplateDirective, NoItemsTemplateDirective, ItemsNotFoundTemplateDirective],
+  exports: [widgesToImport, NgplItemTemplateDirective, NoItemsTemplateDirective, ItemsNotFoundTemplateDirective],
   imports: [
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule,
-    MatListModule,
-    MatSelectModule,
     ReactiveFormsModule,
     MatIconModule,
     OverlayModule,

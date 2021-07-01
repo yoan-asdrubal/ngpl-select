@@ -1,9 +1,12 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ContentChild,
   EventEmitter,
   forwardRef,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -11,16 +14,21 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import {ReplaySubject} from 'rxjs';
-import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl} from '@angular/forms';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {Changes} from 'ngx-reactivetoolkit';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
-import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService} from 'ngpl-common';
+import {isNotNullOrUndefined, NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService} from 'ngpl-common';
+import {CdkOverlayOrigin, Overlay, OverlayPositionBuilder, OverlayRef} from '@angular/cdk/overlay';
+import {TemplatePortal} from '@angular/cdk/portal';
+import {NgplItemTemplateDirective} from '../ngpl-item-template.directive';
+import {ItemsNotFoundTemplateDirective} from '../items-not-found-template.directive';
+import {NoItemsTemplateDirective} from '../no-items-template.directive';
 
 /**
  * Se comporta como un select, permite realizar busqueda sobre las opciones en el frontend
@@ -86,7 +94,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
    * Template para mostrar cuando no existan resultados en la búsqueda, es opcional.
    */
 
-  @Input() noItemsText  = 'No hay elementos.';
+  @Input() noItemsText = 'No hay elementos.';
 
   /**
    * Template para mostrar cuando no existan resultados en la búsqueda, es opcional.
@@ -101,7 +109,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   /**
    * Define el ancho del panel del Autocomplete, por defecto 100% del elemento sobre el que se muestra
    */
-  @Input() panelWidth = '';
+  @Input() panelWidth = '250px';
   /**
    * Mat-Label que se mostrará en el mat-form-field del autocomplete
    */
@@ -211,8 +219,26 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
   @Input() itemTemplate: TemplateRef<any>;
 
+  private overlayRef: OverlayRef;
+  ngControl: NgControl;
+  @ViewChild(CdkOverlayOrigin, {static: true}) origin: CdkOverlayOrigin;
+  @ViewChild('templatePortalContent', {static: true}) templatePortalContent: TemplateRef<any>;
 
-  constructor(private ngplFilterService: NgplFilterService) {
+  @ContentChild(NgplItemTemplateDirective, {static: false})
+  itemTemplateRef: NgplItemTemplateDirective;
+
+  @ContentChild(ItemsNotFoundTemplateDirective, {static: false})
+  itemNoFoundTemplateRef: ItemsNotFoundTemplateDirective;
+
+  @ContentChild(NoItemsTemplateDirective, {static: false})
+  noItemsTemplateRef: NoItemsTemplateDirective;
+
+  constructor(private overlay: Overlay,
+              private injector: Injector,
+              private changeDetectorRef: ChangeDetectorRef,
+              private overlayPositionBuilder: OverlayPositionBuilder,
+              private _viewContainerRef: ViewContainerRef,
+              private ngplFilterService: NgplFilterService) {
   }
 
   /** Parte 1
@@ -224,6 +250,8 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
    * Si se especifica un valor se configura un filtro en el formato correspondiente para utilizar {@link filterPipe}
    */
   ngOnInit(): void {
+    this.ngControl = this.injector.get(NgControl, null, 2);
+
     // Parte 1
     this.items$
       .pipe(
@@ -263,6 +291,48 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
       )
     ).subscribe();
 
+    const positionStrategy = this.overlayPositionBuilder
+      .flexibleConnectedTo(this.origin.elementRef)
+      .withPositions([{
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: -22
+      }, {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+        offsetY: 22
+      }
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      positionStrategy
+    });
+    this.overlayRef.backdropClick()
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe(() => {
+        this.overlayRef.detach();
+      });
+  }
+
+  openPanelWithBackdrop(event): void {
+
+    event.stopPropagation();
+    event.preventDefault();
+    if (this.disabledControl || this.readOnlyControl || !!this.showLoading) {
+      return;
+    }
+    this.overlayRef.attach(new TemplatePortal(
+      this.templatePortalContent,
+      this._viewContainerRef));
+
   }
 
   ngAfterViewInit(): void {
@@ -277,6 +347,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   }
 
   selectItem(item): any {
+    this.overlayRef.detach();
     return this.select(item) ? this.emit() : '';
   }
 
