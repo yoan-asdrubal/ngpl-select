@@ -1,10 +1,11 @@
 {
-  "name": "ngpl-library",
+  "name": "ngpl-select",
   "version": "0.0.0",
+
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4200 --base-href /",
-    "build": "ng build --prod --base-href /ngpl-select.github.io/",
+    "build": "ng build --prod --base-href /ngpl-select/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -15,7 +16,15 @@
     "test:lib": "jest",
     "test:lib:coverage": "jest --coverage"
   },
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yoan-asdrubal/ngpl-select"
+  },
+  "homepage": "https://yoan-asdrubal.github.io/ngpl-select/",
+  "bugs": {
+    "url": "https://github.com/yoan-asdrubal/ngpl-select/issues"
+  },
+  "private": false,
   "dependencies": {
     "@angular/animations": "~11.0.5",
     "@angular/cdk": "^11.2.0",
@@ -30,7 +39,8 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
     "@ngneat/until-destroy": "^8.0.3",
-    "ngpl-common": "^2.0.24",
+    "ngpl-common": "^2.0.26",
+    "ngpl-filter": "^1.0.6",
     "ngx-reactivetoolkit": "^8.0.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

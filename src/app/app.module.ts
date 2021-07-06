@@ -28,6 +28,7 @@ import {NgplSelectTestComponent} from './app-test/ngpl-select-test/ngpl-select-t
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgplCommonModule} from 'ngpl-common';
 import {NgplSelectModule} from './ngpl/src/lib';
+import {NgplFilterModule} from 'ngpl-filter';
 // import 'ngpl-common/lib/ngpl-interfaces/string.interface';
 // import 'ngpl-common/lib/ngpl-interfaces/object.interface';
 
@@ -67,7 +68,8 @@ const materialModules = [
     ReactiveFormsModule,
     materialModules,
     NgplCommonModule,
-    NgplSelectModule
+    NgplSelectModule,
+    NgplFilterModule
   ],
   providers: [{
     provide: LOCALE_ID, useValue: 'es-cl'
