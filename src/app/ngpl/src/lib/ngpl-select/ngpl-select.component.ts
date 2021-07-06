@@ -23,12 +23,13 @@ import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {Changes} from 'ngx-reactivetoolkit';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {isNotNullOrUndefined, NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService} from 'ngpl-common';
+import {isNotNullOrUndefined} from 'ngpl-common';
 import {CdkOverlayOrigin, Overlay, OverlayPositionBuilder, OverlayRef} from '@angular/cdk/overlay';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {NgplItemTemplateDirective} from '../ngpl-item-template.directive';
-import {ItemsNotFoundTemplateDirective} from '../items-not-found-template.directive';
-import {NoItemsTemplateDirective} from '../no-items-template.directive';
+import {NgplItemsNotFoundTemplateDirective} from '../ngpl-items-not-found-template.directive';
+import {NgplNoItemsTemplateDirective} from '../ngpl-no-items-template.directive';
+import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService} from 'ngpl-filter';
 
 /**
  * Se comporta como un select, permite realizar busqueda sobre las opciones en el frontend
@@ -197,6 +198,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
    * Emite los valores filtrados en el componente
    */
   filteredItems$ = new ReplaySubject<any[]>(1);
+  filteredItems = [];
 
   /**
    * FormControl que controla el campo sobre el que se realiza la busqueda
@@ -227,11 +229,11 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   @ContentChild(NgplItemTemplateDirective, {static: false})
   itemTemplateRef: NgplItemTemplateDirective;
 
-  @ContentChild(ItemsNotFoundTemplateDirective, {static: false})
-  itemNoFoundTemplateRef: ItemsNotFoundTemplateDirective;
+  @ContentChild(NgplItemsNotFoundTemplateDirective, {static: false})
+  itemNoFoundTemplateRef: NgplItemsNotFoundTemplateDirective;
 
-  @ContentChild(NoItemsTemplateDirective, {static: false})
-  noItemsTemplateRef: NoItemsTemplateDirective;
+  @ContentChild(NgplNoItemsTemplateDirective, {static: false})
+  noItemsTemplateRef: NgplNoItemsTemplateDirective;
 
   constructor(private overlay: Overlay,
               private injector: Injector,
@@ -277,6 +279,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
       , tap((value: string) => {
           if (!!value && value.trim().length === 0) {
+            this.filteredItems = this.items;
             this.filteredItems$.next(this.items);
           } else {
             this.filterConfig = {
@@ -450,7 +453,8 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
   applyFilter(items, filter): void {
     this.stickSearch = false;
-    this.filteredItems$.next(this.ngplFilterService.filter(items, filter));
+    this.filteredItems = this.ngplFilterService.filter(items, filter);
+    this.filteredItems$.next(this.filteredItems);
     this.stickSearch = true;
   }
 
@@ -493,5 +497,9 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
   newValue(value: any): void {
     this.writeValue(value);
+  }
+
+  get minHigth(): any {
+    return this.filteredItems?.length < 5 ? `${this.filteredItems?.length * 48}px` : `240px`;
   }
 }

@@ -11,17 +11,18 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {NgplSelectComponent} from './ngpl-select/ngpl-select.component';
 import {NgplCommonDirectivesModule, NgplCommonModule} from 'ngpl-common';
 import { NgplItemTemplateDirective } from './ngpl-item-template.directive';
-import { NoItemsTemplateDirective } from './no-items-template.directive';
-import { ItemsNotFoundTemplateDirective } from './items-not-found-template.directive';
+import { NgplNoItemsTemplateDirective } from './ngpl-no-items-template.directive';
+import { NgplItemsNotFoundTemplateDirective } from './ngpl-items-not-found-template.directive';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {NgplFilterModule} from 'ngpl-filter';
 
 const widgesToImport = [
   NgplSelectComponent,
 ];
 
 @NgModule({
-  declarations: [widgesToImport, NgplItemTemplateDirective, NoItemsTemplateDirective, ItemsNotFoundTemplateDirective],
-  exports: [widgesToImport, NgplItemTemplateDirective, NoItemsTemplateDirective, ItemsNotFoundTemplateDirective],
+  declarations: [widgesToImport, NgplItemTemplateDirective, NgplNoItemsTemplateDirective, NgplItemsNotFoundTemplateDirective],
+  exports: [widgesToImport, NgplItemTemplateDirective, NgplNoItemsTemplateDirective, NgplItemsNotFoundTemplateDirective],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -31,6 +32,7 @@ const widgesToImport = [
     OverlayModule,
     ScrollingModule,
     NgplCommonModule,
+    NgplFilterModule,
     NgplCommonDirectivesModule
   ]
 })
