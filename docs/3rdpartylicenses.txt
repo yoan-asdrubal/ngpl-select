@@ -94,11 +94,6 @@ MIT
 @ngneat/until-destroy
 MIT
 
-@ngpl/common
-
-codelyzer
-MIT
-
 css-loader
 MIT
 Copyright JS Foundation and other contributors
@@ -124,6 +119,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ngpl-common
+
+ngpl-filter
 
 ngx-reactivetoolkit
 MIT
