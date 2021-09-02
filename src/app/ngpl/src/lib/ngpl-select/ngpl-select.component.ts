@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
+  ContentChild, ElementRef,
   EventEmitter,
   forwardRef,
   Injector,
@@ -30,6 +30,7 @@ import {NgplItemTemplateDirective} from '../ngpl-item-template.directive';
 import {NgplItemsNotFoundTemplateDirective} from '../ngpl-items-not-found-template.directive';
 import {NgplNoItemsTemplateDirective} from '../ngpl-no-items-template.directive';
 import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService} from 'ngpl-filter';
+import {MatFormField} from "@angular/material/form-field";
 
 /**
  * Se comporta como un select, permite realizar busqueda sobre las opciones en el frontend
@@ -110,7 +111,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   /**
    * Define el ancho del panel del Autocomplete, por defecto 100% del elemento sobre el que se muestra
    */
-  @Input() panelWidth = '250px';
+  @Input() panelWidth = null;
   /**
    * Mat-Label que se mostrará en el mat-form-field del autocomplete
    */
@@ -144,6 +145,9 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
    * que se puede especificar este atributo como showAllOption=false
    */
   @Input() showAllOption = true;
+
+  @Input() showAllOptionText = 'TODOS';
+
 
   /** Define el atributo appearance del matFormField, permite los mismos valores */
   @Input() appearance: 'legacy' | 'standard' | 'fill' | 'outline' | 'default' = 'outline';
@@ -224,6 +228,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   private overlayRef: OverlayRef;
   ngControl: NgControl;
   @ViewChild(CdkOverlayOrigin, {static: true}) origin: CdkOverlayOrigin;
+  @ViewChild('origin', {static: true}) divOrigin: ElementRef;
   @ViewChild('templatePortalContent', {static: true}) templatePortalContent: TemplateRef<any>;
 
   @ContentChild(NgplItemTemplateDirective, {static: false})
@@ -234,6 +239,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
   @ContentChild(NgplNoItemsTemplateDirective, {static: false})
   noItemsTemplateRef: NgplNoItemsTemplateDirective;
+
 
   constructor(private overlay: Overlay,
               private injector: Injector,
@@ -310,6 +316,12 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
         offsetY: 22
       }
       ]);
+
+
+    console.log('this.elementRef', this.divOrigin);
+    console.log('this.nativeElement', this.divOrigin.nativeElement);
+    console.log('this.offsetWidth', this.divOrigin.nativeElement.offsetWidth);
+    console.log('this.clientWidth', this.divOrigin.nativeElement.clientWidth);
 
     this.overlayRef = this.overlay.create({
       hasBackdrop: true,
@@ -500,6 +512,10 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   }
 
   get minHigth(): any {
-    return this.filteredItems?.length < 5 ? `${this.filteredItems?.length * 48}px` : `240px`;
+    return this.calcMinItems < 5 ? `${this.calcMinItems * 48}px` : `240px`;
+  }
+
+  get calcMinItems(): number {
+    return this.filteredItems?.length + (!!this.showAllOption ? 1 : 0);
   }
 }

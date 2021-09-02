@@ -1,4 +1,5 @@
 <mat-form-field class="ngpl-select {{customClass}}"
+                #ngplSelect
                 (click)="openPanelWithBackdrop($event)"
                 [appearance]="appearance"
                 [floatLabel]="showLoading ? 'always' : floatLabel"
@@ -15,10 +16,9 @@
   <mat-icon class="arrow" matSuffix *ngIf="showLoading!==true">arrow_drop_down</mat-icon>
 
 </mat-form-field>
-<div cdkOverlayOrigin></div>
-
+<div cdkOverlayOrigin #origin class="origin"></div>
 <ng-template #templatePortalContent>
-  <div class="mat-elevation-z8 ngpl-select-content" [ngplWidth]="panelWidth">
+  <div class="mat-elevation-z8 ngpl-select-content" [ngplWidth]="panelWidth || (origin.clientWidth || origin.offsetWidth)+'px'">
 
     <div *ngIf="searcheable===true" class="ngpl-select-search" disabled="disabled"
          (click)="$event.preventDefault()" [class.sticky]="stickSearch">
@@ -39,6 +39,14 @@
                                  itemSize="48"
                                  [ngStyle]="{minHeight: minHigth }"
                                  class="ngpl-select-search-viewport">
+
+      <ng-template [ngIf]=" showAllOption === true">
+        <div class="ngpl-select-option" (click)="selectItem(null)">
+          <div>
+            <span>{{showAllOptionText}}</span>
+          </div>
+        </div>
+      </ng-template>
 
       <div (click)="selectItem(item)"
            class="ngpl-select-option"

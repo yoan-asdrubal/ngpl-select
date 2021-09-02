@@ -15,26 +15,28 @@
   </div>
   <form [formGroup]="formGroup" fxLayout="column">
     <div fxLayout fxLayoutAlign="space-around">
-      <ngpl-select ngplWidth="250px"
+      <ngpl-select ngplWidth="350px"
                    [ngplDisableControl]="disableControl.value"
                    placeHolder="With Id as Value"
                    propValue="id"
                    [readOnlyControl]="readOnlyControl.value"
                    [showLoading]="loadingControl.value"
                    formControlName="select"
+                   showAllOptionText="Every Item"
                    [items]="items">
 
       </ngpl-select>
-      <ngpl-select ngplWidth="250px"
+      <ngpl-select ngplWidth="350px"
                    [ngplDisableControl]="disableControl.value"
                    placeHolder="With Object as Value"
                    [readOnlyControl]="readOnlyControl.value"
                    [showLoading]="loadingControl.value"
                    formControlName="select1"
+                   showAllOption="false"
                    [items]="items">
 
       </ngpl-select>
-      <ngpl-select ngplWidth="250px"
+      <ngpl-select ngplWidth="350px"
                    placeHolder="With Label Function"
                    propValue="descripcion"
                    [readOnlyControl]="readOnlyControl.value"
@@ -48,7 +50,7 @@
     </div>
     <div fxLayout fxLayoutAlign="space-around">
 
-      <ngpl-select ngplWidth="250px"
+      <ngpl-select ngplWidth="350px"
                    placeHolder="With Custom Template"
                    propValue="descripcion"
                    [readOnlyControl]="readOnlyControl.value"
