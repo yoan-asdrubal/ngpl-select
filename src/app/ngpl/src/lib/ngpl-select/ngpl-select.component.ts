@@ -516,6 +516,6 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
   }
 
   get calcMinItems(): number {
-    return this.filteredItems?.length + (!!this.showAllOption ? 1 : 0);
+    return this.filteredItems?.length + (this.showAllOption === true ? 1 : 0);
   }
 }
