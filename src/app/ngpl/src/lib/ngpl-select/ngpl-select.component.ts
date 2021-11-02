@@ -220,7 +220,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
    * Referencia al panel del autocomplete , se utiliza para abrir o cerrar el mismo segun corresponda
    */
   @ViewChild('customInput', {read: MatAutocompleteTrigger}) searchAutoCompletePanel;
-  @ViewChild('searchInput') searchInput;
+  @ViewChild('searchInput', {static: false}) searchInputRef: ElementRef;
   @Input() customClass: '';
 
   @Input() itemTemplate: TemplateRef<any>;
@@ -318,16 +318,18 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
       ]);
 
 
-    console.log('this.elementRef', this.divOrigin);
-    console.log('this.nativeElement', this.divOrigin.nativeElement);
-    console.log('this.offsetWidth', this.divOrigin.nativeElement.offsetWidth);
-    console.log('this.clientWidth', this.divOrigin.nativeElement.clientWidth);
+    // console.log('this.elementRef', this.divOrigin);
+    // console.log('this.nativeElement', this.divOrigin.nativeElement);
+    // console.log('this.offsetWidth', this.divOrigin.nativeElement.offsetWidth);
+    // console.log('this.clientWidth', this.divOrigin.nativeElement.clientWidth);
 
     this.overlayRef = this.overlay.create({
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-transparent-backdrop',
       positionStrategy
     });
+
+
     this.overlayRef.backdropClick()
       .pipe(
         untilDestroyed(this)
@@ -337,7 +339,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
       });
   }
 
-  openPanelWithBackdrop(event): void {
+  openPanelWithBackdrop(event, inputSearch = null): void {
 
     event.stopPropagation();
     event.preventDefault();
@@ -347,6 +349,7 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
     this.overlayRef.attach(new TemplatePortal(
       this.templatePortalContent,
       this._viewContainerRef));
+    this.inputSearchFocus();
 
   }
 
@@ -495,10 +498,10 @@ export class NgplSelectComponent implements OnInit, AfterViewInit, OnChanges, On
 
   inputSearchFocus(): void {
     setTimeout(() => {
-      if (!!this.searchInput) {
-        this.searchInput.nativeElement.focus();
+      if (!!this.searchInputRef) {
+        this.searchInputRef.nativeElement.focus();
       }
-    }, 200);
+    }, 100);
   }
 
   clearValue(): void {

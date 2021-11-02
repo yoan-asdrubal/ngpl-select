@@ -49,6 +49,16 @@
 
     </div>
     <div fxLayout fxLayoutAlign="space-around">
+      <ngpl-select ngplWidth="220px"
+                   placeHolder="No searcheable"
+                   propValue="descripcion"
+                   searcheable="false"
+                   [readOnlyControl]="readOnlyControl.value"
+                   [showLoading]="loadingControl.value"
+                   [noItemsText]="'No existen items a listar'"
+                   formControlName="select5"
+                   [items]="[]">
+      </ngpl-select>
 
       <ngpl-select ngplWidth="350px"
                    placeHolder="With Custom Template"
@@ -128,4 +138,3 @@
   </div>
 
 </section>
-
